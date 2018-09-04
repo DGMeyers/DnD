@@ -14,6 +14,9 @@ import (
 
 const dbURL = "mongodb://localhost:12345"
 
+// compile all templates and cache them
+var templates = template.Must(template.ParseGlob("assets/*"))
+
 // Character is a representation for a DnD character
 type Character struct {
 	Name  string
@@ -47,17 +50,23 @@ func DisplayCharacters(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	// Initialize a new template
-	t := template.New("characters")
+	//	t := template.New("characters")
 	// Parse the template
-	parsedT, err := t.ParseFiles("assets/characters.tmpl")
-	if err != nil {
-		fmt.Printf("Error Parsing file: %+v", err)
-	}
+	//	parsedT, err := t.ParseFiles("assets/characters.tmpl")
+	//	if err != nil {
+	//		fmt.Printf("Error Parsing file: %+v", err)
+	//	}
 	// Execute the template to the indicated io writer
-	fmt.Printf("Here are my characters: %+v", characters)
-	err = parsedT.Execute(w, characters)
+	//	fmt.Printf("Here are my characters: %+v", characters)
+	//	err = parsedT.Execute(w, characters)
+	//	if err != nil {
+	//		fmt.Printf("\n\nError executing template: %+v\n\n", err)
+	//	}
+	// you access the cached templates with the defined name, not the filename
+	err = templates.ExecuteTemplate(w, "characters", characters)
 	if err != nil {
-		fmt.Printf("\n\nError executing template: %+v\n\n", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 }
 
