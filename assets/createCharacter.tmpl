@@ -1,0 +1,42 @@
+{{ define "createCharacter" }}
+		<!DOCTYPE html>
+		<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+		<body>
+<div class="container">
+<div class="jumbotron">
+  <h1 class="display-4">Dungeons & David</h1>
+  <p class="lead">This is the magical land of David</p>
+  <hr class="my-4">
+  <p>This is the story of excitment, love, magic, feats of strength, wonderous creatures, magical potions, mighty weapons, and sexy Steve's</p>
+</div>
+<div class="row">
+<div class="col-md-6">
+<form action="/createCharacter" method="POST">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter name">
+    <small id="nameHelp" class="form-text text-muted">Enter your characters name!!!</small>
+  </div>
+  <div class="form-group">
+    <label for="age">Age</label>
+    <input type="number" class="form-control" id="age" name="age" min="1" max="100">
+  </div>
+  <div class="form-group">
+    <label for="race">Race</label>
+    <input type="text" class="form-control" id="race">
+  </div>
+  <div class="form-group">
+    <label for="class">Class</label>
+    <input type="text" class="form-control" id="class">
+  </div>
+  <button type="submit" class="btn btn-primary">Create Character</button>
+</form>
+</div>
+</div>
+</div>
+		</body>
+		</html>
+{{ end }}
