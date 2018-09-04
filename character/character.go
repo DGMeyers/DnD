@@ -12,6 +12,8 @@ import (
 	"github.com/mongodb/mongo-go-driver/mongo"
 )
 
+const dbURL = "mongodb://localhost:12345"
+
 // Character is a representation for a DnD character
 type Character struct {
 	Name  string
@@ -22,7 +24,7 @@ type Character struct {
 
 func DisplayCharacters(w http.ResponseWriter, r *http.Request) {
 	var characters []Character
-	client := connectToDatabase("mongodb://localhost:27017")
+	client := connectToDatabase(dbURL)
 	collection := client.Database("DnD").Collection("characters")
 	cur, err := collection.Find(context.Background(), nil)
 	if err != nil {
@@ -38,6 +40,7 @@ func DisplayCharacters(w http.ResponseWriter, r *http.Request) {
 		var currentCharacter Character
 		bsonBytes, _ := bson.Marshal(elem)
 		bson.Unmarshal(bsonBytes, &currentCharacter)
+		fmt.Printf("connect to currentCharacter: %+v", currentCharacter)
 		characters = append(characters, currentCharacter)
 	}
 	if err = cur.Err(); err != nil {
@@ -51,6 +54,7 @@ func DisplayCharacters(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Error Parsing file: %+v", err)
 	}
 	// Execute the template to the indicated io writer
+	fmt.Printf("Here are my characters: %+v", characters)
 	err = parsedT.Execute(w, characters)
 	if err != nil {
 		fmt.Printf("\n\nError executing template: %+v\n\n", err)
@@ -90,7 +94,7 @@ func CreateCharacter(w http.ResponseWriter, r *http.Request) {
 
 // SaveCharacter will save a character struct to a mongodb instance
 func SaveCharacter(characterToSave Character) {
-	client := connectToDatabase("mongodb://localhost:27017")
+	client := connectToDatabase(dbURL)
 	collection := client.Database("DnD").Collection("characters")
 	res, err := collection.InsertOne(context.Background(), characterToSave)
 	if err != nil {
