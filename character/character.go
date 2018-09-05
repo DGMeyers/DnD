@@ -43,7 +43,6 @@ func DisplayCharacters(w http.ResponseWriter, r *http.Request) {
 		var currentCharacter Character
 		bsonBytes, _ := bson.Marshal(elem)
 		bson.Unmarshal(bsonBytes, &currentCharacter)
-		fmt.Printf("connect to currentCharacter: %+v", currentCharacter)
 		characters = append(characters, currentCharacter)
 	}
 	if err = cur.Err(); err != nil {
@@ -73,17 +72,11 @@ func DisplayCharacters(w http.ResponseWriter, r *http.Request) {
 // CreateCharacter is the handler for the GET/POST requests on the /createCharacter endpoint
 func CreateCharacter(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		// Initialize a new template
-		t := template.New("createCharacter")
-		// Parse the template
-		parsedT, err := t.ParseFiles("assets/createCharacter.tmpl")
+		fmt.Println("hewwo fwiend")
+		err := templates.ExecuteTemplate(w, "createCharacter", nil)
 		if err != nil {
-			fmt.Printf("Error Parsing file: %+v", err)
-		}
-		// Execute the template to the indicated io writer
-		err = parsedT.Execute(w, nil)
-		if err != nil {
-			fmt.Printf("\n\nError executing template: %+v\n\n", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
 	} else if r.Method == "POST" {
 		r.ParseForm()
@@ -98,6 +91,7 @@ func CreateCharacter(w http.ResponseWriter, r *http.Request) {
 			Race:  race,
 		}
 		SaveCharacter(newCharacter)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 }
 
@@ -105,11 +99,10 @@ func CreateCharacter(w http.ResponseWriter, r *http.Request) {
 func SaveCharacter(characterToSave Character) {
 	client := connectToDatabase(dbURL)
 	collection := client.Database("DnD").Collection("characters")
-	res, err := collection.InsertOne(context.Background(), characterToSave)
+	_, err := collection.InsertOne(context.Background(), characterToSave)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("responseobject: %+v", res)
 }
 
 func connectToDatabase(url string) *mongo.Client {
