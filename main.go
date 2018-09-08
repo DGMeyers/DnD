@@ -14,3 +14,5 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 	fmt.Println("listening on server")
 }
+
+// install mongodb and run Mongod or mongodaemon

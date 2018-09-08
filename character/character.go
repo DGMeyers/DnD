@@ -19,12 +19,16 @@ var templates = template.Must(template.ParseGlob("assets/*"))
 
 // Character is a representation for a DnD character
 type Character struct {
-	Name  string
-	Class string
-	Race  string
-	Age   int
+	Name         string
+	Class        string
+	Race         string
+	Age          int
+	Strength     int
+	Intelligence int
+	Agility      int
 }
 
+// DisplayCharacters is being displayed for user
 func DisplayCharacters(w http.ResponseWriter, r *http.Request) {
 	var characters []Character
 	client := connectToDatabase(dbURL)
@@ -48,20 +52,6 @@ func DisplayCharacters(w http.ResponseWriter, r *http.Request) {
 	if err = cur.Err(); err != nil {
 		log.Fatal(err)
 	}
-	// Initialize a new template
-	//	t := template.New("characters")
-	// Parse the template
-	//	parsedT, err := t.ParseFiles("assets/characters.tmpl")
-	//	if err != nil {
-	//		fmt.Printf("Error Parsing file: %+v", err)
-	//	}
-	// Execute the template to the indicated io writer
-	//	fmt.Printf("Here are my characters: %+v", characters)
-	//	err = parsedT.Execute(w, characters)
-	//	if err != nil {
-	//		fmt.Printf("\n\nError executing template: %+v\n\n", err)
-	//	}
-	// you access the cached templates with the defined name, not the filename
 	err = templates.ExecuteTemplate(w, "characters", characters)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -84,11 +74,17 @@ func CreateCharacter(w http.ResponseWriter, r *http.Request) {
 		class := r.Form.Get("class")
 		race := r.Form.Get("race")
 		age, _ := strconv.Atoi(r.Form.Get("age"))
+		strength, _ := strconv.Atoi(r.Form.Get("strength"))
+		intelligence, _ := strconv.Atoi(r.Form.Get("intelligence"))
+		agility, _ := strconv.Atoi(r.Form.Get("agility"))
 		newCharacter := Character{
-			Name:  name,
-			Age:   age,
-			Class: class,
-			Race:  race,
+			Name:         name,
+			Age:          age,
+			Class:        class,
+			Race:         race,
+			Strength:     strength,
+			Intelligence: intelligence,
+			Agility:      agility,
 		}
 		SaveCharacter(newCharacter)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
