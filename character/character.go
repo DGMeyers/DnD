@@ -17,6 +17,21 @@ const dbURL = "mongodb://localhost:12345"
 // compile all templates and cache them
 var templates = template.Must(template.ParseGlob("assets/*"))
 
+// Fight will take two forms for characters and display them back
+func Fight(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		err := templates.ExecuteTemplate(w, "fight", nil)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+	// Parse form for two characters
+	// Grab the two characters from the database
+	// Pass back the that booty and the two characters through the template execute
+	// The template will be called "fight"
+}
+
 // Character is a representation for a DnD character
 type Character struct {
 	Name         string

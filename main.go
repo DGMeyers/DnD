@@ -9,10 +9,9 @@ import (
 
 func main() {
 	fmt.Println("starting server")
+	http.HandleFunc("/fight", character.Fight)
 	http.HandleFunc("/createCharacter", character.CreateCharacter)
 	http.HandleFunc("/", character.DisplayCharacters)
 	http.ListenAndServe(":8080", nil)
 	fmt.Println("listening on server")
 }
-
-// install mongodb and run Mongod or mongodaemon
