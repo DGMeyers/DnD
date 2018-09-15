@@ -34,13 +34,15 @@ func Fight(w http.ResponseWriter, r *http.Request) {
 
 // Character is a representation for a DnD character
 type Character struct {
-	Name         string
-	Class        string
-	Race         string
-	Age          int
-	Strength     int
-	Intelligence int
-	Agility      int
+	Name             string
+	Career           string
+	Race             string
+	CurrentXP        int
+	TotalXP          int
+	PersonalDetails  personalDetails
+	CharacterProfile characterProfile
+	Weapons          []weapons
+	Armor            []armour
 }
 
 // DisplayCharacters is being displayed for user
