@@ -31,10 +31,6 @@
             <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp" placeholder="Enter name">
           </div>
           <div class="form-group">
-            <div class="p-3 mb-2 bg-dark text-white">Age</div>
-            <input type="number" class="form-control" id="age" name="age" min="1" max="100">
-          </div>
-          <div class="form-group">
             <div class="p-3 mb-2 bg-dark text-white">Race</div>
             <input type="hidden" class="form-control" id="race" name="race">
             <div class="dropdown">
@@ -43,23 +39,10 @@
                 Choose your race
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <p class="dropdown-item" onclick="selectRace('human')">human</p>
-                <p class="dropdown-item" onclick="selectRace('orc')">orc</p>
-                <p class="dropdown-item" onclick="selectRace('elf')">elf</p>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="p-3 mb-2 bg-dark text-white">Class</div>
-              <input type="hidden" class="form-control" id="class" name="class">
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                Choose your class
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <p class="dropdown-item" onclick="selectClass('Warrior')">warrior</p>
-                <p class="dropdown-item" onclick="selectClass('Mage')">mage</p>
-                <p class="dropdown-item" onclick="selectClass('Thief')">thief</p>
+                <p class="dropdown-item" onclick="selectRace('Human')">Human</p>
+                <p class="dropdown-item" onclick="selectRace('Dwarf')">Dwarf</p>
+                <p class="dropdown-item" onclick="selectRace('Elf')">Elf</p>
+                <p class="dropdown-item" onclick="selectRace('Halfling')">Halfling</p>
               </div>
             </div>
             <div class="form-group">
@@ -83,12 +66,6 @@
     function selectRace(x) {
       $(document).ready(function () {
         $("input.race").val(x);
-        $("#dropdownMenuButton").html(x);
-      })
-    }
-function selectClass(x) {
-      $(document).ready(function () {
-        $("input.class").val(x);
         $("#dropdownMenuButton").html(x);
       })
     }

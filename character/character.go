@@ -2,11 +2,9 @@ package character
 
 import (
 	"context"
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/mongo"
@@ -79,7 +77,6 @@ func DisplayCharacters(w http.ResponseWriter, r *http.Request) {
 // CreateCharacter is the handler for the GET/POST requests on the /createCharacter endpoint
 func CreateCharacter(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		fmt.Println("hewwo fwiend")
 		err := templates.ExecuteTemplate(w, "createCharacter", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -88,20 +85,12 @@ func CreateCharacter(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "POST" {
 		r.ParseForm()
 		name := r.Form.Get("name")
-		class := r.Form.Get("class")
+		career := r.Form.Get("career")
 		race := r.Form.Get("race")
-		age, _ := strconv.Atoi(r.Form.Get("age"))
-		strength, _ := strconv.Atoi(r.Form.Get("strength"))
-		intelligence, _ := strconv.Atoi(r.Form.Get("intelligence"))
-		agility, _ := strconv.Atoi(r.Form.Get("agility"))
 		newCharacter := Character{
-			Name:         name,
-			Age:          age,
-			Class:        class,
-			Race:         race,
-			Strength:     strength,
-			Intelligence: intelligence,
-			Agility:      agility,
+			Name:   name,
+			Career: career,
+			Race:   race,
 		}
 		SaveCharacter(newCharacter)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
